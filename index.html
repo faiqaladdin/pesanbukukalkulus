@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sedia Buku Kalkulus — Pemesanan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#7C9FDD;
+    --blue-deep:#5E80C4;
+    --gold:#D9B23C;
+    --gold-dark:#B4901F;
+    --green:#1F4A3A;
+    --ink:#14171f;
+    --paper:#FBF8F1;
+    --white:#ffffff;
+    --danger:#C0392B;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Poppins',sans-serif;
+    background:var(--blue);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.10), transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(31,74,58,0.18), transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .screen{
+    width:100%;
+    max-width:560px;
+    padding:32px 20px 120px;
+    position:relative;
+    z-index:1;
+    animation:fadeIn .45s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  [hidden]{display:none !important;}
+
+  /* ---------- LANDING ---------- */
+  .hero{
+    text-align:center;
+    padding-top:8vh;
+  }
+  .hero .eyebrow{
+    display:inline-block;
+    font-weight:700;
+    letter-spacing:.18em;
+    font-size:13px;
+    color:var(--green);
+    background:var(--white);
+    padding:6px 16px;
+    border-radius:999px;
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    font-size:clamp(40px,11vw,64px);
+    line-height:.95;
+    color:var(--white);
+    margin:0;
+    -webkit-text-stroke:1px rgba(0,0,0,0.05);
+  }
+  .hero .accent{
+    display:block;
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:clamp(56px,16vw,96px);
+    color:var(--gold);
+    line-height:.85;
+    margin:2px 0 6px;
+    text-shadow: 2px 2px 0 rgba(20,23,31,0.15);
+  }
+  .hero .sub{
+    font-weight:700;
+    font-size:17px;
+    color:var(--white);
+    letter-spacing:.06em;
+    margin-top:6px;
+  }
+  .hero .sub b{
+    color:var(--gold);
+    font-size:20px;
+  }
+  .price-plate{
+    margin:34px auto 0;
+    border:3px solid var(--green);
+    border-radius:14px;
+    background:rgba(255,255,255,0.12);
+    padding:16px 18px;
+    max-width:340px;
+  }
+  .price-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:6px 0;
+    color:var(--white);
+    font-weight:600;
+    font-size:15px;
+  }
+  .price-row + .price-row{border-top:1px dashed rgba(255,255,255,0.35);}
+  .price-row .amount{font-family:'Anton',sans-serif;font-size:20px;color:var(--gold);}
+  .discount-tag{
+    display:inline-block;
+    margin-top:14px;
+    background:var(--gold);
+    color:var(--ink);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.06em;
+    padding:5px 12px;
+    border-radius:999px;
+  }
+  .btn-primary{
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:19px;
+    letter-spacing:.05em;
+    color:var(--white);
+    background:linear-gradient(180deg,var(--green),#123326);
+    padding:18px 54px;
+    border-radius:999px;
+    box-shadow:0 8px 0 #0c2016, 0 14px 24px rgba(0,0,0,0.25);
+    margin-top:40px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn-primary:active{
+    transform:translateY(6px);
+    box-shadow:0 2px 0 #0c2016, 0 6px 14px rgba(0,0,0,0.2);
+  }
+  .authors{
+    margin-top:46px;
+    display:flex;
+    justify-content:center;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  .authors span{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    font-size:14px;
+    letter-spacing:.04em;
+    color:var(--ink);
+    background:var(--paper);
+    padding:6px 14px;
+    border-radius:8px;
+  }
+
+  /* ---------- FORM ---------- */
+  .card{
+    background:var(--paper);
+    border-radius:var(--radius);
+    padding:22px 20px;
+    box-shadow:0 14px 30px rgba(20,23,31,0.22);
+  }
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:var(--white);
+    font-weight:600;
+    font-size:14px;
+    text-decoration:none;
+    margin-bottom:16px;
+    opacity:.9;
+  }
+  .instructions{
+    background:var(--white);
+    border-left:6px solid var(--gold);
+    border-radius:12px;
+    padding:18px 18px 16px;
+    margin-bottom:20px;
+    font-size:14px;
+    line-height:1.65;
+  }
+  .instructions h3{
+    margin:0 0 10px;
+    font-size:16px;
+    font-family:'Poppins',sans-serif;
+  }
+  .instructions ol{margin:0 0 12px;padding-left:20px;}
+  .instructions p{margin:0 0 8px;}
+  .instructions .contacts{margin:8px 0 0;padding-left:0;list-style:none;}
+  .instructions .contacts li{margin-bottom:2px;}
+  .instructions .thanks{margin-top:10px;font-style:italic;color:#555;}
+
+  .card h2{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    color:var(--green);
+    font-size:26px;
+    margin:0 0 18px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;
+    font-weight:700;
+    font-size:13px;
+    margin-bottom:7px;
+    color:var(--ink);
+  }
+  .field .hint{
+    font-weight:400;
+    font-size:12px;
+    color:#777;
+    margin-left:4px;
+  }
+  .field input[type=text]{
+    width:100%;
+    padding:13px 14px;
+    border-radius:10px;
+    border:2px solid #e1ddd0;
+    font-family:'Poppins',sans-serif;
+    font-size:15px;
+    background:var(--white);
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  .field input[type=text]:focus{border-color:var(--blue-deep);}
+  .field input.invalid{border-color:var(--danger);}
+  .error-msg{
+    color:var(--danger);
+    font-size:12px;
+    margin-top:6px;
+    display:none;
+    font-weight:600;
+  }
+  .error-msg.show{display:block;}
+
+  .order-options{display:flex;flex-direction:column;gap:10px;}
+  .order-option{
+    position:relative;
+    border:2px solid #e1ddd0;
+    border-radius:12px;
+    padding:13px 14px;
+    background:var(--white);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .order-option input{accent-color:var(--green);width:18px;height:18px;flex:none;}
+  .order-option .label{font-weight:600;font-size:15px;}
+  .order-option:has(input:checked){
+    border-color:var(--green);
+    background:#eef4ef;
+  }
+
+  .upload-box{
+    border:2px dashed #cfc9b8;
+    border-radius:12px;
+    background:var(--white);
+    padding:18px;
+    text-align:center;
+    cursor:pointer;
+  }
+  .upload-box.has-file{border-style:solid;border-color:var(--green);}
+  .upload-box input{display:none;}
+  .upload-box .icon{font-size:26px;display:block;margin-bottom:6px;}
+  .upload-box .txt{font-size:13px;color:#666;}
+  .preview-img{
+    max-width:100%;
+    max-height:220px;
+    border-radius:10px;
+    margin-top:12px;
+    display:none;
+    border:2px solid #e1ddd0;
+  }
+
+  .btn-submit{
+    width:100%;
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:17px;
+    color:var(--white);
+    background:linear-gradient(180deg,var(--green),#123326);
+    padding:16px;
+    border-radius:12px;
+    margin-top:6px;
+    box-shadow:0 6px 0 #0c2016;
+  }
+  .btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+  .btn-submit:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #0c2016;}
+
+  .status-msg{
+    text-align:center;
+    font-size:13px;
+    margin-top:12px;
+    font-weight:600;
+    display:none;
+  }
+  .status-msg.show{display:block;}
+  .status-msg.err{color:var(--danger);}
+  .status-msg.ok{color:var(--green);}
+
+  /* ---------- RECEIPT ---------- */
+  .receipt{
+    background:var(--white);
+    border-radius:var(--radius);
+    padding:0;
+    overflow:hidden;
+    box-shadow:0 14px 30px rgba(20,23,31,0.25);
+  }
+  .receipt-head{
+    background:var(--green);
+    color:var(--white);
+    padding:22px 22px 40px;
+    text-align:center;
+    position:relative;
+  }
+  .receipt-head .check{
+    width:52px;height:52px;
+    border-radius:50%;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 12px;
+    font-size:26px;
+    color:var(--green);
+  }
+  .receipt-head h2{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    letter-spacing:.04em;
+    margin:0 0 4px;
+    font-size:22px;
+  }
+  .receipt-head p{margin:0;font-size:13px;opacity:.85;}
+  .receipt-body{
+    padding:26px 24px 10px;
+    margin-top:-22px;
+    background:var(--white);
+    border-radius:18px 18px 0 0;
+    position:relative;
+  }
+  .receipt-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px dashed #e1ddd0;
+    font-size:14px;
+  }
+  .receipt-row:last-of-type{border-bottom:none;}
+  .receipt-row .k{color:#777;font-weight:600;}
+  .receipt-row .v{font-weight:700;text-align:right;}
+  .ttd-block{
+    text-align:center;
+    padding:20px 0 8px;
+  }
+  .ttd-block .sign{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:34px;
+    color:var(--ink);
+    margin-bottom:2px;
+  }
+  .ttd-block .role{
+    font-size:12px;
+    color:#777;
+    border-top:2px solid var(--ink);
+    display:inline-block;
+    padding-top:4px;
+    font-weight:600;
+  }
+  .receipt-cut{
+    height:22px;
+    background:
+      radial-gradient(circle 11px at 0 50%, transparent 10px, var(--white) 11px) ,
+      radial-gradient(circle 11px at 100% 50%, transparent 10px, var(--white) 11px);
+    background-size:22px 22px;
+    background-repeat:repeat-x;
+    background-color:var(--blue);
+  }
+
+  .send-instruction{
+    text-align:center;
+    color:var(--white);
+    font-weight:700;
+    font-size:15px;
+    margin:26px 0 14px;
+    line-height:1.5;
+  }
+  .send-instruction .small{
+    display:block;
+    font-weight:400;
+    font-size:12.5px;
+    opacity:.85;
+    margin-top:4px;
+  }
+  .admin-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .admin-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    text-decoration:none;
+    background:#25D366;
+    color:var(--white);
+    font-weight:700;
+    font-size:15px;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 6px 0 #159149;
+  }
+  .admin-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #159149;}
+  .admin-btn .num{opacity:.85;font-weight:500;font-size:12.5px;}
+
+  .new-order{
+    display:block;
+    text-align:center;
+    margin-top:22px;
+    color:var(--white);
+    font-size:13px;
+    font-weight:600;
+    text-decoration:underline;
+    opacity:.85;
+    background:none;
+    border:none;
+    cursor:pointer;
+    width:100%;
+  }
+
+  /* ---------- WATERMARK ---------- */
+  .watermark{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    text-align:center;
+    padding:12px 10px 14px;
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:17px;
+    color:rgba(255,255,255,0.85);
+    background:linear-gradient(180deg, rgba(124,159,221,0) 0%, rgba(20,23,31,0.28) 100%);
+    letter-spacing:.02em;
+    z-index:5;
+    pointer-events:none;
+  }
+
+  @media (max-width:380px){
+    .hero h1{font-size:38px;}
+    .hero .accent{font-size:52px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= SCREEN 1: LANDING ================= -->
+<section id="screen-landing" class="screen hero">
+  <span class="eyebrow">JILID I &amp; II · EDISI 9</span>
+  <h1>SEDIA BUKU</h1>
+  <span class="accent">Kalkulus</span>
+  <p class="sub">VARBERG · PURCELL · RIGDON</p>
+
+  <div class="price-plate">
+    <div class="price-row"><span>Jilid I</span><span class="amount">Rp60.000</span></div>
+    <div class="price-row"><span>Jilid II</span><span class="amount">Rp65.000</span></div>
+    <div class="discount-tag">DISKON PRE-ORDER · 1–25 AGUSTUS</div>
+  </div>
+
+  <div>
+    <button class="btn-primary" id="btnPesan" type="button">PESAN</button>
+  </div>
+
+  <div class="authors">
+    <span>Tuku</span>
+    <span>Sinau</span>
+    <span>Turu</span>
+  </div>
+</section>
+
+<!-- ================= SCREEN 2: FORM ================= -->
+<section id="screen-form" class="screen" hidden>
+  <a href="#" class="back-link" id="btnBack">&larr; Kembali</a>
+
+  <div class="instructions">
+    <h3>📖 CARA PEMESANAN</h3>
+    <ol>
+      <li>Lakukan pembayaran sesuai total pesanan melalui DANA ke nomor: <strong>082231043993</strong></li>
+      <li>Setelah pembayaran berhasil, screenshot riwayat pembayaran sebagai bukti transfer.</li>
+      <li>Simpan bukti pembayaran, kemudian isi formulir pemesanan pada halaman ini.</li>
+      <li>Unggah bukti pembayaran pada formulir dan lengkapi data diri sesuai petunjuk.</li>
+    </ol>
+    <p>Apabila terdapat kendala atau pertanyaan, silakan hubungi: 📞</p>
+    <ul class="contacts">
+      <li>082231043993</li>
+      <li>085876137389</li>
+    </ul>
+    <p class="thanks">Terima kasih atas partisipasinya. Semoga proses pemesanan berjalan lancar.</p>
+  </div>
+
+  <div class="card">
+    <h2>Form Pemesanan</h2>
+    <form id="orderForm" novalidate>
+
+      <div class="field">
+        <label for="nama">Nama Lengkap <span class="hint">(huruf &amp; spasi saja)</span></label>
+        <input type="text" id="nama" placeholder="contoh: Faiq Aladin" autocomplete="off" required>
+        <div class="error-msg" id="err-nama">Nama hanya boleh berisi huruf dan spasi.</div>
+      </div>
+
+      <div class="field">
+        <label for="noWa">Nomor WhatsApp <span class="hint">(angka saja)</span></label>
+        <input type="text" id="noWa" inputmode="numeric" placeholder="contoh: 085876137389" autocomplete="off" required maxlength="15">
+        <div class="error-msg" id="err-wa">Nomor WhatsApp hanya boleh berisi angka.</div>
+      </div>
+
+      <div class="field">
+        <label>Pesanan <span class="hint">(pilih salah satu)</span></label>
+        <div class="order-options">
+          <label class="order-option">
+            <input type="radio" name="order" value="Jilid I" required>
+            <span class="label">Jilid I</span>
+          </label>
+          <label class="order-option">
+            <input type="radio" name="order" value="Jilid II" required>
+            <span class="label">Jilid II</span>
+          </label>
+          <label class="order-option">
+            <input type="radio" name="order" value="Jilid I & II" required>
+            <span class="label">Jilid I &amp; II</span>
+          </label>
+        </div>
+        <div class="error-msg" id="err-order">Silakan pilih salah satu pesanan.</div>
+      </div>
+
+      <div class="field">
+        <label>Bukti Pembayaran <span class="hint">(gambar, maks. 5MB)</span></label>
+        <div class="upload-box" id="uploadBox">
+          <input type="file" id="bukti" accept="image/*" required>
+          <span class="icon">📎</span>
+          <span class="txt" id="uploadTxt">Ketuk untuk unggah screenshot bukti transfer</span>
+          <img class="preview-img" id="previewImg" alt="Preview bukti pembayaran">
+        </div>
+        <div class="error-msg" id="err-bukti">File harus berupa gambar dan maksimal 5MB.</div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btnSubmit">Submit Pesanan</button>
+      <div class="status-msg" id="statusMsg"></div>
+    </form>
+  </div>
+</section>
+
+<!-- ================= SCREEN 3: RECEIPT ================= -->
+<section id="screen-receipt" class="screen" hidden>
+  <div class="receipt">
+    <div class="receipt-head">
+      <div class="check">✓</div>
+      <h2>Pesanan Diterima</h2>
+      <p>Simpan kuitansi ini sebagai bukti pemesanan</p>
+    </div>
+    <div class="receipt-cut"></div>
+    <div class="receipt-body">
+      <div class="receipt-row"><span class="k">Nama Pemesan</span><span class="v" id="rcNama">-</span></div>
+      <div class="receipt-row"><span class="k">Pesanan</span><span class="v" id="rcOrder">-</span></div>
+      <div class="receipt-row"><span class="k">No. WhatsApp</span><span class="v" id="rcWa">-</span></div>
+      <div class="receipt-row"><span class="k">Waktu Pemesanan</span><span class="v" id="rcWaktu">-</span></div>
+
+      <div class="ttd-block">
+        <div class="sign">signature</div>
+        <div class="role">TTD Admin</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="send-instruction">
+    Screenshot kuitansi ini dan kirimkan ke salah satu nomor admin berikut
+    <span class="small">Tinggal ketuk salah satu tombol, langsung terhubung ke WhatsApp admin</span>
+  </p>
+
+  <div class="admin-buttons">
+    <a class="admin-btn" href="https://wa.link/dixjt5" target="_blank" rel="noopener">
+      💬 Kirim ke Admin 1
+    </a>
+    <a class="admin-btn" href="https://wa.link/1vnmxs" target="_blank" rel="noopener">
+      💬 Kirim ke Admin 2
+    </a>
+  </div>
+
+  <button class="new-order" id="btnNewOrder" type="button">Buat pesanan baru</button>
+</section>
+
+<div class="watermark">✎ sinau bareng lulus bareng</div>
+
+<script>
+/* =========================================================
+   GANTI URL DI BAWAH INI dengan URL Web App Google Apps Script
+   (lihat panduan pemasangan yang diberikan terpisah)
+========================================================= */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsBmhVLUy2kfvu9Z-08QNC1mJ4eurPu1KWRxhiWWQmVZf-50av0LlccnDQTGDGWxa8zg/exec";
+
+const screenLanding = document.getElementById('screen-landing');
+const screenForm = document.getElementById('screen-form');
+const screenReceipt = document.getElementById('screen-receipt');
+
+document.getElementById('btnPesan').addEventListener('click', () => {
+  screenLanding.hidden = true;
+  screenForm.hidden = false;
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+document.getElementById('btnBack').addEventListener('click', (e) => {
+  e.preventDefault();
+  screenForm.hidden = true;
+  screenLanding.hidden = false;
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+document.getElementById('btnNewOrder').addEventListener('click', () => {
+  document.getElementById('orderForm').reset();
+  clearPreview();
+  screenReceipt.hidden = true;
+  screenLanding.hidden = false;
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ---- Nama: huruf & spasi saja ---- */
+const namaInput = document.getElementById('nama');
+namaInput.addEventListener('input', () => {
+  namaInput.value = namaInput.value.replace(/[^A-Za-zÀ-ÿ\s]/g, '');
+});
+
+/* ---- No WA: angka saja ---- */
+const waInput = document.getElementById('noWa');
+waInput.addEventListener('input', () => {
+  waInput.value = waInput.value.replace(/[^0-9]/g, '');
+});
+
+/* ---- Upload bukti pembayaran ---- */
+const uploadBox = document.getElementById('uploadBox');
+const buktiInput = document.getElementById('bukti');
+const uploadTxt = document.getElementById('uploadTxt');
+const previewImg = document.getElementById('previewImg');
+const errBukti = document.getElementById('err-bukti');
+let buktiBase64 = null;
+let buktiMime = null;
+let buktiFilename = null;
+
+uploadBox.addEventListener('click', () => buktiInput.click());
+
+buktiInput.addEventListener('change', () => {
+  errBukti.classList.remove('show');
+  const file = buktiInput.files[0];
+  if (!file) { clearPreview(); return; }
+
+  if (!file.type.startsWith('image/')) {
+    errBukti.textContent = 'File harus berupa gambar (jpg/png/dll).';
+    errBukti.classList.add('show');
+    buktiInput.value = '';
+    clearPreview();
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    errBukti.textContent = 'Ukuran gambar maksimal 5MB.';
+    errBukti.classList.add('show');
+    buktiInput.value = '';
+    clearPreview();
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    buktiBase64 = e.target.result.split(',')[1];
+    buktiMime = file.type;
+    buktiFilename = file.name;
+    previewImg.src = e.target.result;
+    previewImg.style.display = 'block';
+    uploadTxt.textContent = file.name + ' — ketuk untuk ganti gambar';
+    uploadBox.classList.add('has-file');
+  };
+  reader.readAsDataURL(file);
+});
+
+function clearPreview(){
+  buktiBase64 = null;
+  buktiMime = null;
+  buktiFilename = null;
+  previewImg.style.display = 'none';
+  previewImg.src = '';
+  uploadTxt.textContent = 'Ketuk untuk unggah screenshot bukti transfer';
+  uploadBox.classList.remove('has-file');
+}
+
+/* ---- Format tanggal Indonesia: Kamis, 7 Agustus 2026 ---- */
+function formatTanggalIndonesia(date){
+  const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  return `${hari[date.getDay()]}, ${date.getDate()} ${bulan[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+/* ---- Submit ---- */
+const orderForm = document.getElementById('orderForm');
+const btnSubmit = document.getElementById('btnSubmit');
+const statusMsg = document.getElementById('statusMsg');
+
+orderForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  let valid = true;
+
+  document.getElementById('err-nama').classList.remove('show');
+  document.getElementById('err-wa').classList.remove('show');
+  document.getElementById('err-order').classList.remove('show');
+  document.getElementById('err-bukti').classList.remove('show');
+  namaInput.classList.remove('invalid');
+  waInput.classList.remove('invalid');
+
+  const nama = namaInput.value.trim();
+  const noWa = waInput.value.trim();
+  const orderRadio = document.querySelector('input[name="order"]:checked');
+
+  if (!nama || !/^[A-Za-zÀ-ÿ\s]+$/.test(nama)) {
+    document.getElementById('err-nama').classList.add('show');
+    namaInput.classList.add('invalid');
+    valid = false;
+  }
+  if (!noWa || !/^[0-9]{8,15}$/.test(noWa)) {
+    document.getElementById('err-wa').classList.add('show');
+    waInput.classList.add('invalid');
+    valid = false;
+  }
+  if (!orderRadio) {
+    document.getElementById('err-order').classList.add('show');
+    valid = false;
+  }
+  if (!buktiBase64) {
+    errBukti.textContent = 'Silakan unggah bukti pembayaran.';
+    errBukti.classList.add('show');
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  const now = new Date();
+  const waktuTampil = formatTanggalIndonesia(now);
+
+  btnSubmit.disabled = true;
+  btnSubmit.textContent = 'Mengirim...';
+  statusMsg.className = 'status-msg';
+  statusMsg.textContent = '';
+
+  const payload = {
+    nama: nama,
+    noWa: noWa,
+    order: orderRadio.value,
+    waktuTampil: waktuTampil,
+    waktuISO: now.toISOString(),
+    buktiBase64: buktiBase64,
+    buktiMime: buktiMime,
+    buktiFilename: buktiFilename
+  };
+
+  try {
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_URL') === -1) {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (!result || result.status !== 'ok') {
+        throw new Error(result && result.message ? result.message : 'Gagal menyimpan data.');
+      }
+    }
+
+    document.getElementById('rcNama').textContent = nama;
+    document.getElementById('rcOrder').textContent = orderRadio.value;
+    document.getElementById('rcWa').textContent = noWa;
+    document.getElementById('rcWaktu').textContent = waktuTampil;
+
+    screenForm.hidden = true;
+    screenReceipt.hidden = false;
+    window.scrollTo({top:0, behavior:'smooth'});
+
+  } catch (err) {
+    statusMsg.textContent = 'Terjadi kendala saat mengirim data: ' + err.message + '. Silakan coba lagi.';
+    statusMsg.classList.add('show', 'err');
+  } finally {
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = 'Submit Pesanan';
+  }
+});
+</script>
+</body>
+</html>
